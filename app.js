@@ -63,4 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
 
     const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino]
+
+    //starting coordinate of tetromino top-left corner
+    let currentPosition = 4
+    let currentRotation = 0
+    
+    /* select a random tetromino shape */
+    //random number between 0 and 4 inclusive
+    let random = Math.floor(Math.random() * theTetrominoes.length)
+    let current = theTetrominoes[random][currentRotation]
+
+    //a function to draw a tetromino shape
+    function draw() {
+        current.forEach(index => {
+            /* 
+            Remember `squares` references all the `div`s inside the `.grid` element
+            as an array. By iterating we over each coordinate of the tetromino
+            ([1, width+1, width*2+1, 2]) and offsetting by 4, we can apply the rules
+            described by `.tetromino` in the CSS.
+            */
+            squares[currentPosition + index].classList.add('tetromino')
+        })
+    }
+
+    //a function to undraw a tetromino shape
+    function undraw() {
+        current.forEach(index => {
+            squares[currentPosition + index].classList.remove('tetromino')
+        })
+    }
 })
