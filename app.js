@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //starting coordinate of tetromino top-left corner
     let currentPosition = 4
     let currentRotation = 0
-    
+
     /* select a random tetromino shape */
     //random number between 0 and 4 inclusive
     let random = Math.floor(Math.random() * theTetrominoes.length)
@@ -91,5 +91,41 @@ document.addEventListener('DOMContentLoaded', () => {
         current.forEach(index => {
             squares[currentPosition + index].classList.remove('tetromino')
         })
+    }
+
+    timerId = setInterval(moveDown, 1000)
+
+    function moveDown() {
+        undraw();
+        //moves down the tetronimo one row
+        currentPosition += width;
+        draw();
+        freeze();
+    }
+
+    function freeze() {
+        /* 
+        For each square in the tetromino; examine the same square on the row below it.
+        When an examined square has a class 'taken' then the tetromino has reached vertical
+        limit it can move down and all it's squares are to be given the class taken.
+
+        There is a hidden row at the bottom of the visible grid where all it's squares are
+        marked 'taken' to prevent the tetromino moving beyond the confides of the grid.
+
+        When all a tetromino element has `taken` added to it's class list; a new tetromino
+        is created and draw at the top of the grid.
+        */ 
+        if (current.some(index=>squares[currentPosition + index + width].classList.contains('taken'))) {
+            current.forEach(index => squares[currentPosition + index].classList.add('taken'));
+            getNewTetormino();
+            currentPosition = 4;
+            draw();
+        }
+    }
+
+    function getNewTetormino() {
+        /* Randomly select a new tetromino */
+        random = Math.floor(Math.random() * theTetrominoes.length);
+        current = theTetrominoes[random][currentRotation];
     }
 })
