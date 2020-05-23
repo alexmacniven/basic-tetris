@@ -128,4 +128,19 @@ document.addEventListener('DOMContentLoaded', () => {
         random = Math.floor(Math.random() * theTetrominoes.length);
         current = theTetrominoes[random][currentRotation];
     }
+
+    function moveLeft() {
+        /* Legally moves the tetromino to the left */
+        undraw();
+        // True when any part of tetromino is at a position divisible by 10
+        const isLeftEdge = current.some(index => (currentPosition + index) % width === 0);
+        // When no part of the shape is on the left edge, current postion is reduced
+        if(!isLeftEdge) currentPosition -=1;
+        // Check any part of the tetromino is now in a square with the class taken
+        // When True; increase current position (effectively undoing the reduction)
+        if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+            currentPosition += 1;
+        }
+        draw();
+    }
 })
