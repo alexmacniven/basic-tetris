@@ -143,4 +143,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         draw();
     }
+
+    function moveRight() {
+        /* Legally moves the tetromino to the right */
+        undraw()
+        // True when any part of the tetromino is at a position where dividing by 10 gives remainder 9
+        const isRightEdge = current.some(index => (currentPosition + index) % width === 9);
+        // When no part of the tetromino is at right edge, current position is increased
+        if(!isRightEdge) currentPosition += 1;
+        /// When any part of the tetromino is now in a `taken` square; reduce current postion
+        if(current.some(index => sqaures[currentPosition + index].classlist.contains('taken'))) {
+            currentPosition -= 1;
+        }
+        draw();
+    }
 })
