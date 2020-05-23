@@ -157,4 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         draw();
     }
+
+    /* Function invoked when a key is pressed */
+    function control(e) {
+        if(e.keyCode === 37) {
+            moveLeft();
+        } else if(e.keyCode === 39) {
+            moveRight();
+        } else if(e.keyCode === 40) {
+            moveDown();
+        }
+    }
+    // Invokes `control` when *any* key is pressed
+    // An `event` is passed to the control function
+    document.addEventListener('keyup', control);
 })
