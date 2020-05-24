@@ -9,7 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Array.from() creates an array from all elements located by .querySelectorAll.
     // In this case does .querySelector locate the first element with the class of 'grid'?
     let squares = Array.from(document.querySelectorAll('.grid div'))
-    const width = 10
+    // Selects all div squares in the mini-grid
+    let displaySquares = Array.from(document.querySelectorAll('.mini-grid div'));
+    let nextRandom = 0;
+    const width = 10;
+    const displayWidth = 4;
     const scoreDisplay = document.querySelector('#score')
     const startButton = document.querySelector('#start-button')
     // Map out the coordinates of the L shaped tetrominoes
@@ -64,8 +68,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const theTetrominoes = [lTetromino, zTetromino, tTetromino, oTetromino, iTetromino]
 
+    /* 
+    An array of Tetrominoes in their first rotation *only* for use in
+    the mini-grid preview.
+    */
+    const upNextTetrominoes = [
+        [1, width+1, width*2+1, 2], // lTetromino
+        [width+1, width+2, width*2, width*2+1], // zTetromino
+        [1, width, width+1, width+2], // tTetromino
+        [0, 1, width, width+1], // oTetromino
+        [1, width+1, width*2+1, width*3+1] //iTetromino
+    ]
+
     //starting coordinate of tetromino top-left corner
     let currentPosition = 4
+    let displayIndex = 0; // Starting postition of the mini-grid
     let currentRotation = 0
 
     /* select a random tetromino shape */
@@ -91,6 +108,23 @@ document.addEventListener('DOMContentLoaded', () => {
         current.forEach(index => {
             squares[currentPosition + index].classList.remove('tetromino')
         })
+    }
+
+    /**
+     * Displays the next Tetromino shape on the mini-grid
+     */
+    function displayNextTetromino() {
+        // Iterate over each square in the mini-grid, removing 'tetromino'
+        // from the list of applied classes.
+        displaySquares.forEach(square => {
+            square.classList.remove('tetromino')
+        });
+        // Iterate over each coordinate in the next tetromino shape, adding
+        // 'tetromino' to the list of applied classes to the corresponding 
+        // coordinate in the mini-grid.
+        upNextTetrominoes[nextRandom].forEach(index => {
+            displaySquares[displayIndex + index].classList.add('tetromino')
+        });
     }
 
     timerId = setInterval(moveDown, 1000)
@@ -120,12 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
             getNewTetormino();
             currentPosition = 4;
             draw();
+            displayNextTetromino();
         }
     }
 
     function getNewTetormino() {
         /* Randomly select a new tetromino */
-        random = Math.floor(Math.random() * theTetrominoes.length);
+        random = nextRandom;
+        nextRandom = Math.floor(Math.random() * theTetrominoes.length);
         current = theTetrominoes[random][currentRotation];
     }
 
