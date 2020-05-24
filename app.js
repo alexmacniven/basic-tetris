@@ -158,10 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
         draw();
     }
 
+    function rotate() {
+        undraw();
+        currentRotation++;
+        // Resets rotation to 0 if it reaches 4
+        if(currentRotation === current.length) {
+            currentRotation = 0;
+        }
+        // Selects new rotation as the current shape
+        current = theTetrominoes[random][currentRotation];
+        draw();
+    }
+
     /* Function invoked when a key is pressed */
     function control(e) {
         if(e.keyCode === 37) {
             moveLeft();
+        } else if(e.keyCode === 38) {
+            rotate();
         } else if(e.keyCode === 39) {
             moveRight();
         } else if(e.keyCode === 40) {
