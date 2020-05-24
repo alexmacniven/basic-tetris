@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     the mini-grid preview.
     */
     const upNextTetrominoes = [
-        [1, width+1, width*2+1, 2], // lTetromino
-        [width+1, width+2, width*2, width*2+1], // zTetromino
-        [1, width, width+1, width+2], // tTetromino
-        [0, 1, width, width+1], // oTetromino
-        [1, width+1, width*2+1, width*3+1] //iTetromino
+        [1, displayWidth+1, displayWidth*2+1, 2], // lTetromino
+        [displayWidth+1, displayWidth+2, displayWidth*2, displayWidth*2+1], // zTetromino
+        [1, displayWidth, displayWidth+1, displayWidth+2], // tTetromino
+        [0, 1, displayWidth, displayWidth+1], // oTetromino
+        [1, displayWidth+1, displayWidth*2+1, displayWidth*3+1] //iTetromino
     ]
 
     //starting coordinate of tetromino top-left corner
@@ -123,7 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 'tetromino' to the list of applied classes to the corresponding 
         // coordinate in the mini-grid.
         upNextTetrominoes[nextRandom].forEach(index => {
-            displaySquares[displayIndex + index].classList.add('tetromino')
+            let drawIndex = displayIndex + index;
+            console.log(drawIndex);
+            displaySquares[displayIndex + index].classList.add('tetromino');
         });
     }
 
