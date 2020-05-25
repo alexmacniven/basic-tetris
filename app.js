@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 10;
     let timerId;
     const displayWidth = 4;
+    var score = 0;
     const scoreDisplay = document.querySelector('#score')
     const startButton = document.querySelector('#start-button')
     // Map out the coordinates of the L shaped tetrominoes
@@ -152,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         */ 
         if (current.some(index=>squares[currentPosition + index + width].classList.contains('taken'))) {
             current.forEach(index => squares[currentPosition + index].classList.add('taken'));
+            addScore();
             getNewTetormino();
             currentPosition = 4;
             draw();
@@ -236,4 +238,28 @@ document.addEventListener('DOMContentLoaded', () => {
             displayNextTetromino();
         }
     })
+
+    function addScore() {
+        // iterate over the first column in each row
+        for (let i = 0; i < 199; i += width) {
+            // create an array referencing each square in the row
+            const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9];
+            // when every square in the row has the class 'taken'
+            if(row.every(index => squares[index].classList.contains('taken'))) {
+                // update the score value
+                score += 10;
+                scoreDisplay.innerHTML = score;
+                // remove 'taken' and 'tetromino' from each squares classlist
+                row.forEach(index => {
+                    squares[index].classList.remove('taken');
+                    squares[index].classList.remove('tetromino');
+                })
+                // remove 10 squares from the current row i
+                const squaresRemoved = squares.splice(i, width);
+                // add removed sqaures to the top/start of the sqaures array
+                squares = squaresRemoved.concat(squares);
+                squares.forEach(cell => grid.appendChild(cell));
+            }
+        }
+    }
 })
