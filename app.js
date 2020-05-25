@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             getNewTetormino();
             currentPosition = 4;
             draw();
+            gameOver();
             displayNextTetromino();
         }
     }
@@ -260,6 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 squares = squaresRemoved.concat(squares);
                 squares.forEach(cell => grid.appendChild(cell));
             }
+        }
+    }
+
+    function gameOver() {
+        if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+            scoreDisplay.innerHTML = 'end';
+            clearInterval(timerId);
         }
     }
 })
