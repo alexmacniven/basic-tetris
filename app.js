@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let displaySquares = Array.from(document.querySelectorAll('.mini-grid div'));
     let nextRandom = 0;
     const width = 10;
+    let timerId;
     const displayWidth = 4;
     const scoreDisplay = document.querySelector('#score')
     const startButton = document.querySelector('#start-button')
@@ -129,8 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    timerId = setInterval(moveDown, 1000)
-
     function moveDown() {
         undraw();
         //moves down the tetronimo one row
@@ -223,4 +222,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Invokes `control` when *any* key is pressed
     // An `event` is passed to the control function
     document.addEventListener('keyup', control);
+
+    startButton.addEventListener('click', () => {
+        // When timerId has been initiated; clear and set to null
+        if(timerId) {
+            clearInterval(timerId);
+            timerId = null;
+        } else {
+            // Draw the next shape, initiate the timer and display the next shape
+            draw();
+            timerId = setInterval(moveDown, 1000);
+            nextRandom = Math.floor(Math.random() * theTetrominoes.length);
+            displayNextTetromino();
+        }
+    })
 })
