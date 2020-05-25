@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // When no part of the tetromino is at right edge, current position is increased
         if(!isRightEdge) currentPosition += 1;
         /// When any part of the tetromino is now in a `taken` square; reduce current postion
-        if(current.some(index => sqaures[currentPosition + index].classlist.contains('taken'))) {
+        if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
             currentPosition -= 1;
         }
         draw();
